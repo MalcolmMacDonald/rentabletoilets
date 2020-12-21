@@ -39,11 +39,12 @@ module.exports = {
         }
         await Promise.all(allPromises);
         ad.imagePaths = allPaths;
+
         console.log("Done downloading images");
-        callback(ad);
+        return ad;
     },
     getRecentAds: function (callback) {
-        scraper.search(searchParams)
+        return scraper.search(searchParams)
             .then((allAds) => {
 
                 var currentDate = new Date();
@@ -55,7 +56,7 @@ module.exports = {
                     return minutesDiff < 60;
                 });
 
-                callback(recentAds);
+                return recentAds;
             });
     }
 }

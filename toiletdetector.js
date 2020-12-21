@@ -4,14 +4,17 @@ const fs = require('fs').promises;
 const modelUrl = 'https://tfhub.dev/tensorflow/tfjs-model/ssdlite_mobilenet_v2/1/default/1';
 
 module.exports = {
+
+    loadModel: async function () {
+        return cocoSsd.load().then((laodedModel) => model = laodedModel);
+    },
     // Load the Coco SSD model and image.
     containsToilet: async function (adImagePath) {
-        return Promise.all([cocoSsd.load(), fs.readFile(adImagePath)])
+        return Promise.all([fs.readFile(adImagePath)])
             .then((results) => {
                 // First result is the COCO-SSD model object.
-                const model = results[0];
                 // Second result is image buffer.
-                const imgTensor = tf.node.decodeImage(new Uint8Array(results[1]), 3);
+                const imgTensor = tf.node.decodeImage(new Uint8Array(results[0]), 3);
                 // Call detect() to run inference.
                 return model.detect(imgTensor);
             })
@@ -36,6 +39,6 @@ module.exports = {
 
         await Promise.all(toiletCheckPromises);
         ad.toiletPaths = pathsWithToilets;
-        callback(ad);
+        return ad;
     }
 }
