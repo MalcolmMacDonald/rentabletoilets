@@ -28,6 +28,7 @@ async function downloadImage(url, path) {
 
 module.exports = {
     getImages: async function (ad, callback) {
+
         var allPaths = [];
 
         var allPromises = [];
