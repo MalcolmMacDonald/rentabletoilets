@@ -3,8 +3,10 @@ const kijijiScraper = require('./kijiji');
 const fs = require('fs');
 const { imag } = require('@tensorflow/tfjs-node');
 
-const testURL = "https://www.kijiji.ca/v-apartments-condos/vancouver/1750-525-sq-ft-1feb-furnished-studio-den-yaletown-501-pacific/1541678898";
 
+if (!fs.existsSync('./ad-images/')) {
+    fs.mkdirSync('./ad-images/');
+}
 
 postRecentAds();
 
