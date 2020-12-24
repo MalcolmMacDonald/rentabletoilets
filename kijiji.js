@@ -54,7 +54,7 @@ module.exports = {
                     var msDiff = currentDate - adDate;
                     var minutesDiff = (msDiff / (1000 * 60)).toFixed(1);
 
-                    return minutesDiff < 60;
+                    return minutesDiff < 600;
                 });
 
                 return recentAds;

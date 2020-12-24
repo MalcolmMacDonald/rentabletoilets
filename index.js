@@ -1,5 +1,6 @@
 const toiletDetector = require('./toiletdetector');
 const kijijiScraper = require('./kijiji');
+const twitter = require('./twitter.js');
 const fs = require('fs');
 const { imag } = require('@tensorflow/tfjs-node');
 
@@ -18,8 +19,15 @@ async function postRecentAds() {
     var recentAds = await kijijiScraper.getRecentAds();
     for (var i = 0; i < recentAds.length; i++) {
         recentAds[i] = await getToiletImages(recentAds[i]);
+
+        if (recentAds[i].toiletPaths.length > 1) {
+            await twitter.tweetImage(recentAds[i]);
+            console.log("Test, tweeting first images from ad " + i);
+        }
         console.log("Paths with toilets: " + recentAds[i].toiletPaths);
     }
+
+
 
     await fs.readdir('./ad-images/', (err, files) => {
         for (const file of files) {
@@ -28,6 +36,7 @@ async function postRecentAds() {
             });
         }
     });
+
 }
 
 
