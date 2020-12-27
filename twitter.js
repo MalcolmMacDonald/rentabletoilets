@@ -25,34 +25,14 @@ module.exports = {
 
         return new Promise(resolve => {
 
-            T.post('media/upload', { command: 'INIT', total_bytes: totalFileSize, media_type: 'image/jpeg' }, function (err1, data1, response1) {
-                var originalMediaID = data1.media_id;
-                T.post('media/upload', { media_data: b64ContentArray[0], media_id: originalMediaID, command: 'APPEND', segment_index: 0 }, function (err2, data2, response2) {
+            T.post('media/upload', { media_data: b64ContentArray[0] }, function (err, data, response) { //ONLY POST THE FIRST PHOTO, THIS IS BECAUSE IM LAZY AND ITS HARD TO POST MULTIPLE PHOTOS
+                var splitLocation = ad.attributes.location.split(',')[0];
+                var params = { status: splitLocation + '\n\n\n' + ad.url, media_ids: data.media_id_string }
 
-                    T.post('media/upload', { media_data: b64ContentArray[1], media_id: originalMediaID, command: 'APPEND', segment_index: 1 }, function (err3, data3, response3) {
+                T.post('statuses/update', params, function (err, data, response) {
+                    resolve();
+                })
 
-                        T.post('media/upload', { command: 'FINALIZE', media_id: originalMediaID }, function (err4, data4, response4) {
-
-
-
-                            var mediaIdStr = data4.media_id_string;
-                            var altText = "Kijiji toilet";
-                            var meta_params = { media_id: mediaIdStr, alt_text: { text: altText } }
-
-
-                            T.post('media/metadata/create', meta_params, function (err, data, response) {
-                                if (!err) {
-                                    // now we can reference the media and post a tweet (media will attach to the tweet)
-                                    var params = { status: '', media_ids: [mediaIdStr] }
-
-                                    T.post('statuses/update', params, function (err, data, response) {
-                                        resolve();
-                                    })
-                                }
-                            });
-                        });
-                    });
-                });
             });
         });
     }

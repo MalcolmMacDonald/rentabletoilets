@@ -9,6 +9,11 @@ if (!fs.existsSync('./ad-images/')) {
     fs.mkdirSync('./ad-images/');
 }
 
+
+var testJSON = {
+    toiletPaths: ['./ad-images/adImage0.jpg', './ad-images/adImage1.jpg']
+}
+
 postRecentAds();
 
 
@@ -20,10 +25,9 @@ async function postRecentAds() {
     for (var i = 0; i < recentAds.length; i++) {
         recentAds[i] = await getToiletImages(recentAds[i]);
 
-        if (recentAds[i].toiletPaths.length > 1) {
-            await twitter.tweetImage(recentAds[i]);
-            console.log("Test, tweeting first images from ad " + i);
-        }
+        await twitter.tweetImage(recentAds[i]);
+        console.log("Test, tweeting first images from ad " + i);
+
         console.log("Paths with toilets: " + recentAds[i].toiletPaths);
     }
 
