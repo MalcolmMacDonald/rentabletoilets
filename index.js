@@ -9,10 +9,9 @@ if (!fs.existsSync('./ad-images/')) {
     fs.mkdirSync('./ad-images/');
 }
 
-
-var testJSON = {
-    toiletPaths: ['./ad-images/adImage0.jpg', './ad-images/adImage1.jpg']
-}
+//TODO: 
+//post all toilet images
+//reply with the link to the kijiji posting??
 
 postRecentAds();
 
@@ -24,11 +23,13 @@ async function postRecentAds() {
     var recentAds = await kijijiScraper.getRecentAds();
     for (var i = 0; i < recentAds.length; i++) {
         recentAds[i] = await getToiletImages(recentAds[i]);
+        if (recentAds[i].toiletPaths.length > 0) {
+            await twitter.tweetImage(recentAds[i]);
 
-        await twitter.tweetImage(recentAds[i]);
-        console.log("Test, tweeting first images from ad " + i);
+            console.log("Test, tweeting first images from ad " + i);
 
-        console.log("Paths with toilets: " + recentAds[i].toiletPaths);
+            console.log("Paths with toilets: " + recentAds[i].toiletPaths);
+        }
     }
 
 

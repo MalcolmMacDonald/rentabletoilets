@@ -54,9 +54,11 @@ module.exports = {
                     var msDiff = currentDate - adDate;
                     var minutesDiff = (msDiff / (1000 * 60)).toFixed(1);
 
-                    return minutesDiff < 60;
+                    return minutesDiff < 600;
                 });
-
+                if (recentAds.length == 0) {
+                    console.log("Couldn't find ads from the last hour");
+                }
                 return recentAds;
             });
     }

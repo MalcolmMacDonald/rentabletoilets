@@ -19,7 +19,7 @@ const T = new twit(config);
 
 module.exports = {
 
-    tweetImage: async function (ad) {
+    tweetImage: function (ad) {
         var b64ContentArray = ad.toiletPaths.map(url => fs.readFileSync(url, { encoding: 'base64' }));
         var totalFileSize = ad.toiletPaths.map(url => fs.statSync(url).size).reduce((a, b) => a + b, 0);
 
